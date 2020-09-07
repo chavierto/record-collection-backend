@@ -1,2 +1,2 @@
 # record-collection-backend
-Front End repository for Record Collection
+Backend repository for Record Collection
