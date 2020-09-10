@@ -20,6 +20,8 @@ class Album(models.Model):
     acquired_date = models.DateField(blank=True)
     genre = models.CharField(max_length=100, blank=True)
     label = models.CharField(max_length=100, blank=True)
+    # songs = models.ForeignKey(
+    #     Song, on_delete=models.CASCADE, related_name='songs')
     notes = models.TextField(blank=True)
     photo_url = models.TextField(blank=True)
 
@@ -36,5 +38,9 @@ class Song(models.Model):
         Album, on_delete=models.CASCADE, related_name='songs')
     song_url = models.TextField(blank=True)
 
+    class Meta:
+        unique_together = ['album', 'track']
+        ordering = ['track']
+
     def __str__(self):
-        return self.title
+        return f'{self.track} - {self.title}'
