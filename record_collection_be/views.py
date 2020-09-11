@@ -38,6 +38,6 @@ class SongList(generics.ListCreateAPIView):
     serializer_class = SongSerializer
 
 
-class SongDetail(generics.ListCreateAPIView):
+class SongDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
