@@ -33,7 +33,7 @@ class AlbumSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Album
-        fields = ('id', 'title', 'artist', 'artist_id', 'release_year',
+        fields = ('id', 'title', 'artist', 'artist_id', 'release_date',
                   'acquired_date', 'genre', 'label', 'notes', 'photo_url', 'songs')
 
 

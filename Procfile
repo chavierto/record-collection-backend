@@ -1,0 +1,1 @@
+web: gunicorn record_collection_be_django.wsgi

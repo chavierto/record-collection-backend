@@ -12,6 +12,10 @@ djangorestframework = "*"
 django-extensions = "*"
 django-cors-headers = "*"
 pylint-django = "*"
+whitenoise = "*"
+dj-database-url = "*"
+gunicorn = "*"
+django-environ = "*"
 
 [requires]
 python_version = "3.8"
