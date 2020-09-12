@@ -136,3 +136,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# The whitenoise package we installed is going to help us out with serving static files for our app such as css or image files. Even though you may be using Django REST Framework exclusively and didn't add any files of this type to the project yourself, the Django Admin site and Browseable API sites utilize static files like these extensively. If you don't tell Django where to store these files, your app won't deploy properly, so add a new constant to the bottom of your settings.py file:
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
