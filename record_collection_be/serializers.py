@@ -21,6 +21,7 @@ class AlbumSerializer(serializers.HyperlinkedModelSerializer):
     artist = serializers.HyperlinkedRelatedField(
         view_name='artist_detail', read_only=True,
     )
+    artist_string = serializers.CharField(source='artist.name')
     artist_id = serializers.PrimaryKeyRelatedField(
         queryset=Artist.objects.all(),
         source='artist'
@@ -33,7 +34,7 @@ class AlbumSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Album
-        fields = ('id', 'title', 'artist', 'artist_id', 'release_date',
+        fields = ('id', 'title', 'artist', 'artist_string', 'artist_id', 'release_date',
                   'acquired_date', 'genre', 'label', 'notes', 'photo_url', 'songs')
 
 
