@@ -12,5 +12,6 @@ urlpatterns = [
     path('albums', views.AlbumList.as_view(), name='album_list'),
     path('albums/<int:pk>', views.AlbumDetail.as_view(), name='album_detail'),
     path('songs', views.SongList.as_view(), name='song_list'),
-    path('songs/<int:pk>', views.SongDetail.as_view(), name='song_detail')
+    path('songs/<int:pk>', views.SongDetail.as_view(), name='song_detail'),
+    path('new-record/', views.create_new_record, name='new_record')
 ]

@@ -41,3 +41,10 @@ class SongList(generics.ListCreateAPIView):
 class SongDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
+
+def create_new_record(request):
+    if request.method == 'POST':
+        artist_name = request.POST['artist_name']
+        artist = Artist.objects.create(artist=artist_name)
+        album = Album.objects.create(artist, )
+        return HttpResponse(album)
