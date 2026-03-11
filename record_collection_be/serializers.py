@@ -14,14 +14,14 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Artist
-        fields = ('artist', 'notes', 'photo_url', 'albums', 'artist_url')
+        fields = ('id', 'artist', 'notes', 'photo_url', 'albums', 'artist_url')
 
 
 class AlbumSerializer(serializers.HyperlinkedModelSerializer):
     artist = serializers.HyperlinkedRelatedField(
         view_name='artist_detail', read_only=True,
     )
-    artist_string = serializers.CharField(source='artist.artist')
+    artist_string = serializers.CharField(source='artist.artist', read_only=True)
     artist_id = serializers.PrimaryKeyRelatedField(
         queryset=Artist.objects.all(),
         source='artist'
