@@ -45,7 +45,6 @@ class Song(models.Model):
     song_url = models.TextField(blank=True, null=True)
 
     class Meta:
-        unique_together = ['album', 'track']
         ordering = ['track']
 
     def __str__(self):
