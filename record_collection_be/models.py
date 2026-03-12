@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.functions import Lower
 
 # Create your models here.
 
@@ -7,6 +8,11 @@ class Artist(models.Model):
     artist = models.CharField(max_length=100)
     notes = models.TextField(blank=True, null=True)
     photo_url = models.TextField(blank=True, null=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(Lower('artist'), name='artist_name_case_insensitive_unique')
+        ]
 
     def __str__(self):
         return self.artist
