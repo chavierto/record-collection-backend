@@ -29,7 +29,7 @@ class AlbumList(generics.ListCreateAPIView):
 
 
 class AlbumDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Album.objects
+    queryset = Album.objects.all()
     serializer_class = AlbumSerializer
 
 

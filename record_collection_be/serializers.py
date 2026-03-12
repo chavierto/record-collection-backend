@@ -13,7 +13,10 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     def validate_artist(self, value):
-        if Artist.objects.filter(artist__iexact=value).exists():
+        qs = Artist.objects.filter(artist__iexact=value)
+        if self.instance:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
             raise serializers.ValidationError(
                 'An artist with this name already exists.'
             )
