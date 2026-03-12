@@ -24,6 +24,12 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'artist', 'notes', 'photo_url', 'albums', 'artist_url')
 
 
+class SongInlineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Song
+        fields = ('id', 'track', 'title', 'song_url')
+
+
 class AlbumSerializer(serializers.HyperlinkedModelSerializer):
     artist = serializers.HyperlinkedRelatedField(
         view_name='artist_detail', read_only=True,
@@ -33,11 +39,7 @@ class AlbumSerializer(serializers.HyperlinkedModelSerializer):
         queryset=Artist.objects.all(),
         source='artist'
     )
-    songs = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='song_detail'
-    )
+    songs = SongInlineSerializer(many=True, read_only=True)
 
     class Meta:
         model = Album
@@ -54,8 +56,12 @@ class SongSerializer(serializers.HyperlinkedModelSerializer):
     )
     album = serializers.HyperlinkedRelatedField(
         view_name='album_detail', read_only=True)
+    album_id = serializers.PrimaryKeyRelatedField(
+        queryset=Album.objects.all(),
+        source='album'
+    )
 
     class Meta:
         model = Song
         fields = ('id', 'track', 'title', 'artist',
-                  'artist_id', 'album', 'song_url')
+                  'artist_id', 'album', 'album_id', 'song_url')
