@@ -12,6 +12,13 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         view_name='artist_detail'
     )
 
+    def validate_artist(self, value):
+        if Artist.objects.filter(artist__iexact=value).exists():
+            raise serializers.ValidationError(
+                'An artist with this name already exists.'
+            )
+        return value
+
     class Meta:
         model = Artist
         fields = ('id', 'artist', 'notes', 'photo_url', 'albums', 'artist_url')
