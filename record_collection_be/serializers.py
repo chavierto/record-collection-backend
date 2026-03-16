@@ -11,6 +11,7 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
     artist_url = serializers.ModelSerializer.serializer_url_field(
         view_name='artist_detail'
     )
+    album_count = serializers.IntegerField(source='albums.count', read_only=True)
 
     def validate_artist(self, value):
         qs = Artist.objects.filter(artist__iexact=value)
@@ -24,7 +25,7 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Artist
-        fields = ('id', 'artist', 'notes', 'photo_url', 'albums', 'artist_url')
+        fields = ('id', 'artist', 'notes', 'photo_url', 'albums', 'artist_url', 'album_count')
 
 
 class SongInlineSerializer(serializers.ModelSerializer):
