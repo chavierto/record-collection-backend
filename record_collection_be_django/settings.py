@@ -55,9 +55,15 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'record_collection_be_django.middleware.ClerkAuthMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CLERK_JWKS_URL = os.environ.get(
+    'CLERK_JWKS_URL',
+    'https://polite-bluejay-29.clerk.accounts.dev/.well-known/jwks.json'
+)
 
 CORS_ALLOW_ALL_ORIGINS = True
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")

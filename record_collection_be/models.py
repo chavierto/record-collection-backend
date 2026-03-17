@@ -1,17 +1,20 @@
 from django.db import models
+from django.db.models import F
 from django.db.models.functions import Lower
-
-# Create your models here.
 
 
 class Artist(models.Model):
     artist = models.CharField(max_length=100)
     notes = models.TextField(blank=True, null=True)
     photo_url = models.TextField(blank=True, null=True)
+    user_id = models.CharField(max_length=100)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(Lower('artist'), name='artist_name_case_insensitive_unique')
+            models.UniqueConstraint(
+                Lower('artist'), F('user_id'),
+                name='artist_name_user_case_insensitive_unique'
+            )
         ]
 
     def __str__(self):
@@ -26,10 +29,9 @@ class Album(models.Model):
     acquired_date = models.DateField(blank=True, null=True)
     genre = models.CharField(max_length=100, blank=True, null=True)
     label = models.CharField(max_length=100, blank=True, null=True)
-    # songs = models.ForeignKey(
-    #     Song, on_delete=models.CASCADE, related_name='songs')
     notes = models.TextField(blank=True, null=True)
     photo_url = models.TextField(blank=True, null=True)
+    user_id = models.CharField(max_length=100)
 
     def __str__(self):
         return self.title

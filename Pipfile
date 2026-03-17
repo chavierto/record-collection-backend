@@ -6,9 +6,6 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-django = "*"
-psycopg2-binary = "*"
-djangorestframework = "*"
 django-extensions = "*"
 django-cors-headers = "*"
 pylint-django = "*"
@@ -16,6 +13,10 @@ whitenoise = "*"
 dj-database-url = "*"
 gunicorn = "*"
 django-environ = "*"
+pyjwt = {extras = ["crypto"], version = "*"}
+django = ">=4.2"
+psycopg2-binary = ">=2.9.9"
+djangorestframework = ">=3.14"
 
 [requires]
 python_version = "3.12"

@@ -1,29 +1,26 @@
-# The following came in with the inital setup:
-from django.shortcuts import render
 from django.db.models import ProtectedError
-from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ArtistSerializer, AlbumSerializer, SongSerializer
 from .models import Artist, Song, Album
 
-# Create your views here.
-
-
-# def artist_list(request):
-#     artists = Artist.objects.all()
-#     return render(request, 'record_collection_be/artist_list.html', {'artists': artists})
-
 
 class ArtistList(generics.ListCreateAPIView):
-    queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
+
+    def get_queryset(self):
+        return Artist.objects.filter(user_id=self.request.user_id)
+
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.request.user_id)
 
 
 class ArtistDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
+
+    def get_queryset(self):
+        return Artist.objects.filter(user_id=self.request.user_id)
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -36,20 +33,31 @@ class ArtistDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class AlbumList(generics.ListCreateAPIView):
-    queryset = Album.objects.all()
     serializer_class = AlbumSerializer
+
+    def get_queryset(self):
+        return Album.objects.filter(user_id=self.request.user_id)
+
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.request.user_id)
 
 
 class AlbumDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Album.objects.all()
     serializer_class = AlbumSerializer
+
+    def get_queryset(self):
+        return Album.objects.filter(user_id=self.request.user_id)
 
 
 class SongList(generics.ListCreateAPIView):
-    queryset = Song.objects.all()
     serializer_class = SongSerializer
+
+    def get_queryset(self):
+        return Song.objects.filter(album__user_id=self.request.user_id)
 
 
 class SongDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Song.objects.all()
     serializer_class = SongSerializer
+
+    def get_queryset(self):
+        return Song.objects.filter(album__user_id=self.request.user_id)

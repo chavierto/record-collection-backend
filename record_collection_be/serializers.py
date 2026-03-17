@@ -14,7 +14,8 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
     album_count = serializers.IntegerField(source='albums.count', read_only=True)
 
     def validate_artist(self, value):
-        qs = Artist.objects.filter(artist__iexact=value)
+        user_id = self.context['request'].user_id
+        qs = Artist.objects.filter(artist__iexact=value, user_id=user_id)
         if self.instance:
             qs = qs.exclude(pk=self.instance.pk)
         if qs.exists():
@@ -40,10 +41,16 @@ class AlbumSerializer(serializers.HyperlinkedModelSerializer):
     )
     artist_string = serializers.CharField(source='artist.artist', read_only=True)
     artist_id = serializers.PrimaryKeyRelatedField(
-        queryset=Artist.objects.all(),
+        queryset=Artist.objects.none(),
         source='artist'
     )
     songs = SongInlineSerializer(many=True, read_only=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get('request')
+        if request and hasattr(request, 'user_id'):
+            self.fields['artist_id'].queryset = Artist.objects.filter(user_id=request.user_id)
 
     class Meta:
         model = Album
