@@ -149,8 +149,10 @@ class DiscogsMaster(generics.GenericAPIView):
 class DiscogsImage(generics.GenericAPIView):
     def get(self, request):
         from django.http import HttpResponse
+        from urllib.parse import urlparse
         url = request.GET.get('url', '')
-        if not url or 'discogs.com' not in url:
+        parsed = urlparse(url)
+        if not url or not parsed.hostname or not (parsed.hostname == 'discogs.com' or parsed.hostname.endswith('.discogs.com')):
             return HttpResponse(status=400)
         try:
             resp = http_requests.get(url, headers=_discogs_headers(), timeout=5)

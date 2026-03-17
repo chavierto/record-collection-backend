@@ -62,15 +62,24 @@ class SongSerializer(serializers.HyperlinkedModelSerializer):
     artist = serializers.HyperlinkedRelatedField(
         view_name='artist_detail', read_only=True)
     artist_id = serializers.PrimaryKeyRelatedField(
-        queryset=Artist.objects.all(),
-        source='artist'
+        queryset=Artist.objects.none(),
+        source='artist',
+        allow_null=True,
+        required=False,
     )
     album = serializers.HyperlinkedRelatedField(
         view_name='album_detail', read_only=True)
     album_id = serializers.PrimaryKeyRelatedField(
-        queryset=Album.objects.all(),
+        queryset=Album.objects.none(),
         source='album'
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get('request')
+        if request and hasattr(request, 'user_id'):
+            self.fields['artist_id'].queryset = Artist.objects.filter(user_id=request.user_id)
+            self.fields['album_id'].queryset = Album.objects.filter(user_id=request.user_id)
 
     class Meta:
         model = Song

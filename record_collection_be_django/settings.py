@@ -65,7 +65,10 @@ CLERK_JWKS_URL = os.environ.get(
     'https://polite-bluejay-29.clerk.accounts.dev/.well-known/jwks.json'
 )
 
-CORS_ALLOW_ALL_ORIGINS = True
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOWED_ORIGINS = [o.strip() for o in os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',') if o.strip()]
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 ROOT_URLCONF = 'record_collection_be_django.urls'
