@@ -12,11 +12,17 @@ def _get_jwks_client():
     return _jwks_client
 
 
+EXEMPT_PATHS = {'/discogs/image'}
+
+
 class ClerkAuthMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
+        if request.path in EXEMPT_PATHS:
+            return self.get_response(request)
+
         auth_header = request.META.get('HTTP_AUTHORIZATION', '')
         if not auth_header.startswith('Bearer '):
             return JsonResponse({'detail': 'Authentication required.'}, status=401)

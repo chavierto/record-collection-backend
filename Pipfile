@@ -17,6 +17,7 @@ pyjwt = {extras = ["crypto"], version = "*"}
 django = ">=4.2"
 psycopg2-binary = ">=2.9.9"
 djangorestframework = ">=3.14"
+requests = "*"
 
 [requires]
 python_version = "3.12"
