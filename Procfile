@@ -1,1 +1,1 @@
-web: gunicorn record_collection_be_django.wsgi
+web: python manage.py migrate && gunicorn record_collection_be_django.wsgi
