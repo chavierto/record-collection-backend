@@ -25,7 +25,15 @@ class Album(models.Model):
     title = models.CharField(max_length=100)
     artist = models.ForeignKey(
         Artist, on_delete=models.PROTECT, related_name='albums')
+    DATE_PRECISION_CHOICES = [
+        ('full', 'Full date'),
+        ('month', 'Month and year'),
+        ('year', 'Year only'),
+    ]
     release_date = models.DateField(blank=True, null=True)
+    date_precision = models.CharField(
+        max_length=5, choices=DATE_PRECISION_CHOICES, default='full'
+    )
     acquired_date = models.DateField(blank=True, null=True)
     genre = models.CharField(max_length=100, blank=True, null=True)
     label = models.CharField(max_length=100, blank=True, null=True)

@@ -55,7 +55,7 @@ class AlbumSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Album
         fields = ('id', 'title', 'artist', 'artist_string', 'artist_id', 'release_date',
-                  'acquired_date', 'genre', 'label', 'notes', 'photo_url', 'songs')
+                  'date_precision', 'acquired_date', 'genre', 'label', 'notes', 'photo_url', 'songs')
 
 
 class SongSerializer(serializers.HyperlinkedModelSerializer):
