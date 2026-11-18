@@ -78,6 +78,9 @@ class SongDetail(generics.RetrieveUpdateDestroyAPIView):
 class DiscogsSearch(generics.GenericAPIView):
     def get(self, request):
         import re
+        barcode = re.sub(r'\D', '', request.GET.get('barcode', ''))
+        if barcode:
+            return self._barcode_search(barcode)
         q = request.GET.get('q', '').strip()
         if not q:
             return Response({'results': []})
@@ -104,6 +107,29 @@ class DiscogsSearch(generics.GenericAPIView):
                 timeout=5,
             )
             return Response(resp.json())
+        except Exception:
+            return Response({'results': []}, status=502)
+
+    def _barcode_search(self, barcode):
+        # Scanners may read a 12-digit UPC-A as a 13-digit EAN-13 with a leading 0
+        # (or vice versa), and Discogs stores whichever form the submitter typed
+        candidates = [barcode]
+        if len(barcode) == 13 and barcode.startswith('0'):
+            candidates.append(barcode[1:])
+        elif len(barcode) == 12:
+            candidates.append('0' + barcode)
+        try:
+            for candidate in candidates:
+                resp = http_requests.get(
+                    f'{DISCOGS_BASE}/database/search',
+                    params={'barcode': candidate, 'type': 'release', 'per_page': 10},
+                    headers=_discogs_headers(),
+                    timeout=5,
+                )
+                data = resp.json()
+                if data.get('results'):
+                    return Response(data)
+            return Response({'results': []})
         except Exception:
             return Response({'results': []}, status=502)
 
