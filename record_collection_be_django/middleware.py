@@ -12,7 +12,7 @@ def _get_jwks_client():
     return _jwks_client
 
 
-EXEMPT_PATHS = {'/discogs/image'}
+EXEMPT_PATHS = {'/discogs/image', '/favicon.ico'}
 
 
 class ClerkAuthMiddleware:
@@ -20,7 +20,7 @@ class ClerkAuthMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.path in EXEMPT_PATHS:
+        if request.path in EXEMPT_PATHS or request.path.startswith('/admin'):
             return self.get_response(request)
 
         auth_header = request.META.get('HTTP_AUTHORIZATION', '')
